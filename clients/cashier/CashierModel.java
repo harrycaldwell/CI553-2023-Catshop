@@ -112,9 +112,16 @@ public class CashierModel extends Observable
             theProduct.getProductNum(),         //  may fail              
             theProduct.getQuantity() );         //
         if ( stockBought )                      // Stock bought
-        {                                       // T
-          makeBasketIfReq();                    //  new Basket ?
-          theBasket.add( theProduct );          //  Add to bought
+        {
+        	boolean inBasket = false;
+          makeBasketIfReq(); 
+          for (int i =0; i < theBasket.size(); i++) {
+	    		if (theBasket.get(i).getProductNum().equals(theProduct.getProductNum())) {
+	    			theBasket.get(i).setQuantity(theBasket.get(i).getQuantity()+ 1);
+	    			inBasket = true;
+	    		}
+	    	}//  new Basket ?
+          if (!inBasket) {theBasket.add( theProduct );   }       //  Add to bought
           theAction = "Purchased " +            //    details
                   theProduct.getDescription();  //
         } else {                                // F
