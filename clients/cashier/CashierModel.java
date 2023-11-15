@@ -173,11 +173,16 @@ public class CashierModel extends Observable
 	  DEBUG.trace("Remove accessed");
 	    String theAction = "";
 	    try {
-	    if (theBasket != null && theState == State.checked) {
+	    if (theBasket.size() > 0 && theBasket != null && theState == State.checked) {
 	    	for (int i =0; i < theBasket.size(); i++) {
 	    		if (theBasket.get(i).getProductNum().equals(theProduct.getProductNum())) {
-	    			theBasket.remove(i);
-	    			theStock.addStock(theProduct.getProductNum(),theProduct.getQuantity());
+	    			if (theBasket.get(i).getQuantity() > 1) {
+	    				theBasket.get(i).setQuantity(theBasket.get(i).getQuantity() - 1);
+	    			}
+	    			else {
+	    				theBasket.remove(i);
+	    				theStock.addStock(theProduct.getProductNum(),theProduct.getQuantity());
+	    			}
 	    		}
 	    	}
 		    theAction = "Removed " + theProduct.getDescription() + " from the basket";
