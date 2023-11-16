@@ -67,6 +67,21 @@ public class F_StockR implements StockReader
       throw new StockException( "Net: " + e.getMessage() );
     }
   }
+  
+  public synchronized boolean existsName( String desc )
+	         throws StockException
+	  {
+	    DEBUG.trace("F_StockR:exists()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.existsName( desc );
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	  }
 
   /**
    * Returns details about the product in the stock list
@@ -87,6 +102,21 @@ public class F_StockR implements StockReader
       throw new StockException( "Net: " + e.getMessage() );
     }
   }
+  
+  public synchronized Product getDetailsName( String desc )
+	         throws StockException
+	  {
+	    DEBUG.trace("F_StockR:getDetailsName()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.getDetailsName( desc );
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	  }
   
   
   public synchronized ImageIcon getImage( String number )

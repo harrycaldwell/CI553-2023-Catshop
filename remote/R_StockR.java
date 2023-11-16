@@ -40,6 +40,13 @@ public class      R_StockR
   {
     return aStockR.exists( pNum );
   }
+  
+  public synchronized boolean existsName( String desc )
+	         throws RemoteException, StockException
+	  {
+	    return aStockR.exists( desc );
+	  }
+
 
   /**
    * Returns details about the product in the stock list
@@ -51,6 +58,12 @@ public class      R_StockR
   {
     return aStockR.getDetails( pNum );
   }
+  
+  public synchronized Product getDetailsName( String desc )
+	         throws RemoteException, StockException
+	  {
+	    return aStockR.getDetails( desc );
+	  }
   
   /**
    * Returns an image of the product

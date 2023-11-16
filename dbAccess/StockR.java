@@ -107,6 +107,18 @@ public class StockR implements StockReader
       throw new StockException( "SQL exists: " + e.getMessage() );
     }
   }
+  
+  public synchronized boolean existsName(String desc) throws StockException{
+	 try {
+		 ResultSet rs = getStatementObject().executeQuery(
+				 "select distinct description from ProductTable " + " where ProductTable.description like '%" + desc + "%'");
+		 boolean res = rs.next();
+		 DEBUG.trace("DB StockR: existsName(%s) -> %s", (res ? "T" : "F" ) );
+		 return res;
+	 } catch (SQLException e) {
+		 throw new StockException("SQL existsName: " + e.getMessage());
+	 }
+  }
 
   /**
    * Returns details about the product in the stock list.
@@ -140,6 +152,42 @@ public class StockR implements StockReader
       throw new StockException( "SQL getDetails: " + e.getMessage() );
     }
   }
+  
+  public synchronized Product getDetailsName( String desc )
+	         throws StockException
+	  {
+	    try
+	    {
+	      Product   dt = new Product( "0", "", 0.00, 0 );
+	      ResultSet rs = getStatementObject().executeQuery(
+	        "select distinct productNo, price" +
+	        "  from ProductTable " +
+	        "  where  ProductTable.description like '%" + desc + "%' "
+	      );
+	      if ( rs.next() )
+	      {
+	        dt.setProductNum(rs.getString("productNo"));
+	        dt.setDescription(desc);
+	        dt.setPrice( rs.getDouble( "price" ) );
+	        String pn = rs.getString("productNo");
+	        
+	        rs = getStatementObject().executeQuery(
+	        		"select stockLevel"+
+	        		" from ProductTable, StockTable " +
+	        		" where ProductTable.productNo ='" + pn +"' "+
+	        		" and StockTable.productNo ='" + pn + "'" );
+	        if (rs.next()) {
+	        	dt.setQuantity( rs.getInt( "stockLevel" ) );
+	        }
+	      }
+	      rs.close();
+	      return dt;
+	    } catch ( SQLException e )
+	    {
+	      throw new StockException( "SQL getDetailsName: " + e.getMessage() );
+	    }
+	  }
+
 
   /**
    * Returns 'image' of the product

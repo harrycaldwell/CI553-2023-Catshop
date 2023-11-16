@@ -1,6 +1,9 @@
 package catalogue;
 
 import java.io.Serializable;
+import java.util.HashMap;
+
+import middle.StockReader;
 
 /**
  * Used to hold the following information about
@@ -58,5 +61,6 @@ public class Product implements Serializable
   { 
     theQuantity = aQuantity;
   }
+  
 
 }

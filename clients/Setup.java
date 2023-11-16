@@ -60,7 +60,10 @@ class Setup
   "insert into StockTable values ( '0007',  01 )",
 
   "select * from StockTable, ProductTable " +
-          " where StockTable.productNo = ProductTable.productNo"
+          " where StockTable.productNo = ProductTable.productNo",
+		  
+  "select * from StockTable, ProductTable " +
+  	"where ProductTable.description like '%TV%'"
 
  };
 

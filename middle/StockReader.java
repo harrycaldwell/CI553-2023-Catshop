@@ -20,7 +20,9 @@ public interface StockReader
    * @throws StockException if issue
    */
   boolean exists(String pNum) throws StockException;
-         
+  
+  
+  boolean existsName(String pNum) throws StockException;
   /**
    * Returns details about the product in the stock list
    * @param pNum Product nymber
@@ -29,6 +31,8 @@ public interface StockReader
    */
   
   Product getDetails(String pNum) throws StockException;
+  
+  Product getDetailsName(String desc) throws StockException;
   
   
   /**

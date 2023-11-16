@@ -49,6 +49,12 @@ public class      R_StockRW
   {
     return aStockRW.exists( pNum );
   }
+  
+  public synchronized boolean existsName( String name )
+	         throws StockException
+	  {
+	    return aStockRW.existsName( name );
+	  }
 
   /**
    * Returns details about the product in the stock list
@@ -61,6 +67,12 @@ public class      R_StockRW
   {
     return aStockRW.getDetails( pNum );
   }
+  
+  public synchronized Product getDetailsName( String name )
+	         throws StockException
+	  {
+	    return aStockRW.getDetailsName( name );
+	  }
 
   /**
    * Returns an image of the product in the stock list
