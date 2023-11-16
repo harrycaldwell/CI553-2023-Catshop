@@ -16,6 +16,7 @@ import remote.RemoteStockR_I;
 import javax.swing.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  * Setup connection to the middle tier
@@ -103,7 +104,7 @@ public class F_StockR implements StockReader
     }
   }
   
-  public synchronized Product getDetailsName( String desc )
+  public synchronized ArrayList<Product> getDetailsName( String desc )
 	         throws StockException
 	  {
 	    DEBUG.trace("F_StockR:getDetailsName()" );

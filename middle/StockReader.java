@@ -2,6 +2,8 @@ package middle;
 
 import catalogue.Product;
 
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 /**
@@ -32,7 +34,7 @@ public interface StockReader
   
   Product getDetails(String pNum) throws StockException;
   
-  Product getDetailsName(String desc) throws StockException;
+  ArrayList<Product> getDetailsName(String desc) throws StockException;
   
   
   /**

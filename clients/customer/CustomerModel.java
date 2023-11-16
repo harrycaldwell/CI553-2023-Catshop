@@ -10,6 +10,7 @@ import middle.StockReader;
 
 import javax.swing.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 
@@ -100,35 +101,37 @@ public class CustomerModel extends Observable
   
   public void doCheck2(String productName)
   {
-    theBasket.clear();                          // Clear s. list
+    theBasket.clear();   
     String theAction = "";
-    pn  = productName.trim();                    // Product no.
-    int    amount  = 1;                         //  & quantity
+    pn  = productName.trim();    
+    int    amount  = 1;               
     try
-    {
-      if ( theStock.existsName( pn ) )              // Stock Exists?
-      {                                         // T
-        Product pr = theStock.getDetailsName( pn ); //  Product
-        System.out.println(pr);
-        if ( pr.getQuantity() >= amount )       //  In stock?
-        { 
-          theAction =                           //   Display 
-            String.format( "%s : %7.2f (%2d) ", //
-              pr.getProductNum(),              //    description
-              pr.getPrice(),                    //    price
-              pr.getQuantity() );               //    quantity
-          pr.setQuantity( amount );             //   Require 1
-          theBasket.add( pr );                  //   Add to basket
-          thePic = theStock.getImage( pr.getProductNum() );     //    product
-        } else {                                //  F
-          theAction =                           //   Inform
-            pr.getDescription() +               //    product not
-            " this item does not exist." ;                   //    in stock
+    {               
+      ArrayList<Product> products = theStock.getDetailsName( pn );
+       for (Product pr : products) {
+        if ( theStock.existsName(pr.getDescription()) ){  
+        	if ( pr.getQuantity() >= amount )
+        	{ 
+        		theAction =
+        				String.format( "%s : %7.2f (%2d) ",
+        						pr.getProductNum(),  
+        						pr.getPrice(),   
+        						pr.getQuantity() );
+        		pr.setQuantity( amount );      
+        		theBasket.add( pr );               
+        		thePic = theStock.getImage( pr.getProductNum() ); 
+        	} else {              
+        		theAction =            
+        				pr.getDescription() +         
+        				" this item does not exist." ; 
+        	}
         }
-      } else {                                  // F
-        theAction =                             //  Inform Unknown
-          "Unknown Product Query with the name:  " + pn;       //  product number
-      }
+        else {       
+            theAction =                             //  Inform Unknown
+              "Unknown Product Query with the name:  " + pn;       //  product number
+          }
+        }
+       
     } catch( StockException e )
     {
       DEBUG.error("CustomerClient.doCheck()\n%s",

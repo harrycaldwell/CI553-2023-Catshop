@@ -6,6 +6,7 @@ import middle.StockException;
 import javax.swing.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  * Defines the RMI interface for read access to the stock object.
@@ -24,7 +25,7 @@ public interface RemoteStockR_I
             throws RemoteException, StockException;
 boolean existsName(String desc)
 		throws RemoteException, StockException;
-Product getDetailsName(String desc)
+ArrayList<Product> getDetailsName(String desc)
 		throws RemoteException, StockException;;
 }
 

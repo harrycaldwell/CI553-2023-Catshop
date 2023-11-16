@@ -62,8 +62,8 @@ class Setup
   "select * from StockTable, ProductTable " +
           " where StockTable.productNo = ProductTable.productNo",
 		  
-  "select * from StockTable, ProductTable " +
-  	"where ProductTable.description like '%TV%'"
+  /*"select * from StockTable, ProductTable " +
+  	"where ProductTable.description like '%TV%'"*/
 
  };
 

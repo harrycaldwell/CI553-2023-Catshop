@@ -14,6 +14,7 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -153,35 +154,37 @@ public class StockR implements StockReader
     }
   }
   
-  public synchronized Product getDetailsName( String desc )
+  public synchronized ArrayList<Product> getDetailsName( String desc )
 	         throws StockException
 	  {
+	  ArrayList<Product> results = new ArrayList<Product>();
 	    try
 	    {
-	      Product   dt = new Product( "0", "", 0.00, 0 );
+	      Statement sm = theCon.createStatement();
 	      ResultSet rs = getStatementObject().executeQuery(
-	        "select distinct productNo, price" +
+	        "select distinct productNo" +
 	        "  from ProductTable " +
-	        "  where  ProductTable.description like '%" + desc + "%' "
-	      );
-	      if ( rs.next() )
+	        "  where  lower(ProductTable.description) like lower('%" + desc + "%')");
+	      while ( rs.next() )
 	      {
-	        dt.setProductNum(rs.getString("productNo"));
-	        dt.setDescription(desc);
-	        dt.setPrice( rs.getDouble( "price" ) );
-	        String pn = rs.getString("productNo");
-	        
-	        rs = getStatementObject().executeQuery(
-	        		"select stockLevel"+
-	        		" from ProductTable, StockTable " +
-	        		" where ProductTable.productNo ='" + pn +"' "+
-	        		" and StockTable.productNo ='" + pn + "'" );
-	        if (rs.next()) {
-	        	dt.setQuantity( rs.getInt( "stockLevel" ) );
+	    	Product   dt = new Product( "0", "", 0.00, 0 );
+	        String pNum = rs.getString("productNo");
+	        DEBUG.trace(pNum);
+	        ResultSet ry = sm.executeQuery(
+	        		"select description, price, stockLevel " +
+	        		"  from ProductTable, StockTable " +
+	        		"  where  ProductTable.productNo = '" + pNum + "' " +
+	        		"  and    StockTable.productNo   = '" + pNum + "'");
+	        if (ry.next()) {
+	        	dt.setProductNum(pNum);
+	        	dt.setQuantity( ry.getInt( "stockLevel" ) );
+	        	dt.setDescription(ry.getString("description"));
+	        	dt.setPrice( ry.getDouble("price"));
 	        }
+	        results.add(dt);
+	        
 	      }
-	      rs.close();
-	      return dt;
+	      return results;
 	    } catch ( SQLException e )
 	    {
 	      throw new StockException( "SQL getDetailsName: " + e.getMessage() );
