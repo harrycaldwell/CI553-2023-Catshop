@@ -65,7 +65,7 @@ public class CustomerView implements Observer
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
-    theBtCheck.addActionListener(                   // Call back code
+    theBtCheck.addActionListener(
       e -> cont.doCheck2( theInput.getText() ) );
     cp.add( theBtCheck );                           //  Add to canvas
 

@@ -65,7 +65,7 @@ public class CustomerModel extends Observable
   {
     theBasket.clear();                          // Clear s. list
     String theAction = "";
-    pn  = productNum.trim();                    // Product no.
+    String pn  = productNum.trim();                    // Product no.
     int    amount  = 1;                         //  & quantity
     try
     {
@@ -101,6 +101,10 @@ public class CustomerModel extends Observable
   
   public void doCheck2(String productName)
   {
+	  if(productName.contains("0")) {
+		  doCheck(productName);
+		  return;
+	  }
     theBasket.clear();   
     String theAction = "";
     pn  = productName.trim();    
