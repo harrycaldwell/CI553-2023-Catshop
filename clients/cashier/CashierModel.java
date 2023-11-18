@@ -168,6 +168,7 @@ public class CashierModel extends Observable
   
   /**
    * Cashier Removes item from Order
+   * Checks to make sure the basket array size is more than 0 and not null and ensures the state is state.checked
    */
   public void doRemove() {
 	  DEBUG.trace("Remove accessed");
