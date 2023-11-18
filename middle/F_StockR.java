@@ -16,6 +16,7 @@ import remote.RemoteStockR_I;
 import javax.swing.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  * Setup connection to the middle tier
@@ -67,6 +68,21 @@ public class F_StockR implements StockReader
       throw new StockException( "Net: " + e.getMessage() );
     }
   }
+  
+  public synchronized boolean existsName( String desc )
+	         throws StockException
+	  {
+	    DEBUG.trace("F_StockR:exists()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.existsName( desc );
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	  }
 
   /**
    * Returns details about the product in the stock list
@@ -87,6 +103,21 @@ public class F_StockR implements StockReader
       throw new StockException( "Net: " + e.getMessage() );
     }
   }
+  
+  public synchronized ArrayList<Product> getDetailsName( String desc )
+	         throws StockException
+	  {
+	    DEBUG.trace("F_StockR:getDetailsName()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.getDetailsName( desc );
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	  }
   
   
   public synchronized ImageIcon getImage( String number )

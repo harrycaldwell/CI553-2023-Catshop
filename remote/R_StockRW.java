@@ -6,6 +6,7 @@ import middle.StockException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -49,6 +50,18 @@ public class      R_StockRW
   {
     return aStockRW.exists( pNum );
   }
+  
+  /**
+   * Checks if the product exits in the stock list
+   * @param pNum Product name
+   * @return true if exists otherwise false
+   * @throws StockException if issue
+   */
+  public synchronized boolean existsName( String name )
+	         throws StockException
+	  {
+	    return aStockRW.existsName( name );
+	  }
 
   /**
    * Returns details about the product in the stock list
@@ -61,6 +74,18 @@ public class      R_StockRW
   {
     return aStockRW.getDetails( pNum );
   }
+  
+  /**
+   * Returns details about the products in the stock list within the array
+   * @param desc
+   * @return ArrayList with products that match search criteria
+   * @throws StockException if issue
+   */
+  public synchronized ArrayList<Product> getDetailsName( String name )
+	         throws StockException
+	  {
+	    return aStockRW.getDetailsName( name );
+	  }
 
   /**
    * Returns an image of the product in the stock list
