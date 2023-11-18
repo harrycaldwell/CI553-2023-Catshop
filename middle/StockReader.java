@@ -23,7 +23,12 @@ public interface StockReader
    */
   boolean exists(String pNum) throws StockException;
   
-  
+  /**
+   * Checks if the product exits in the stock list
+   * @param pNum Product name
+   * @return true if exists otherwise false
+   * @throws StockException if issue
+   */
   boolean existsName(String pNum) throws StockException;
   /**
    * Returns details about the product in the stock list
@@ -34,6 +39,13 @@ public interface StockReader
   
   Product getDetails(String pNum) throws StockException;
   
+  
+  /**
+   * Returns details about the products in the stock list within the array
+   * @param desc
+   * @return ArrayList with products that match search criteria
+   * @throws StockException if issue
+   */
   ArrayList<Product> getDetailsName(String desc) throws StockException;
   
   

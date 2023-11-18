@@ -51,6 +51,12 @@ public class      R_StockRW
     return aStockRW.exists( pNum );
   }
   
+  /**
+   * Checks if the product exits in the stock list
+   * @param pNum Product name
+   * @return true if exists otherwise false
+   * @throws StockException if issue
+   */
   public synchronized boolean existsName( String name )
 	         throws StockException
 	  {
@@ -69,6 +75,12 @@ public class      R_StockRW
     return aStockRW.getDetails( pNum );
   }
   
+  /**
+   * Returns details about the products in the stock list within the array
+   * @param desc
+   * @return ArrayList with products that match search criteria
+   * @throws StockException if issue
+   */
   public synchronized ArrayList<Product> getDetailsName( String name )
 	         throws StockException
 	  {

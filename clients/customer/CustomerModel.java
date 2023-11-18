@@ -99,18 +99,26 @@ public class CustomerModel extends Observable
     setChanged(); notifyObservers(theAction);
   }
   
+  /**
+   * Check if any products that relate to the name are in stock or exist
+   * @param productName the products name
+   */
   public void doCheck2(String productName)
   {
+	  /* Checks if what is entered contains a 0. If it does, calls on the original doCheck() method to
+	  	 search via productNumber instead. */
 	  if(productName.contains("0")) {
 		  doCheck(productName);
 		  return;
 	  }
     theBasket.clear();   
     String theAction = "";
+    //Translates the product name to pn, gets rid of any blank space
     pn  = productName.trim();    
     int    amount  = 1;               
     try
-    {               
+    {      
+      //Creates an array list of any products that match the criteria
       ArrayList<Product> products = theStock.getDetailsName( pn );
        for (Product pr : products) {
         if ( theStock.existsName(pr.getDescription()) ){  
@@ -181,26 +189,5 @@ public class CustomerModel extends Observable
     return new Basket();
   }
   
-  public void toHashMap() {
-	  String base ="000";
-	  Boolean isHere = true;
-	  int i = 1;
-	  while (isHere) {
-		  String tryProduct = base + Integer.toString(i);
-		  try {
-			if(theStock.exists(tryProduct)) {
-				Product pk = theStock.getDetails(tryProduct);
-				productsKey.put(pk.getDescription(), pk.getProductNum());
-			  }
-			else {
-				isHere=false;
-			}
-			i++;
-		} catch (StockException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	  }
-  }
 }
 

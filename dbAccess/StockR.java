@@ -109,6 +109,12 @@ public class StockR implements StockReader
     }
   }
   
+  
+  /**
+   * Checks if the product exits in the stock list via name/description
+   * @param desc The search criteria entered by the consumer
+   * @return true if exists otherwise false
+   */
   public synchronized boolean existsName(String desc) throws StockException{
 	 try {
 		 ResultSet rs = getStatementObject().executeQuery(
@@ -154,6 +160,12 @@ public class StockR implements StockReader
     }
   }
   
+  /**
+   * Returns an arraylist containing all products in the database that match the search criteria/
+   *  Assumed to exist in database.
+   * @param desc is the description or name of the product entered by the consumer
+   * @return an arraylist containing the products type Product
+   */
   public synchronized ArrayList<Product> getDetailsName( String desc )
 	         throws StockException
 	  {
