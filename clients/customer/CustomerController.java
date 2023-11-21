@@ -29,6 +29,15 @@ public class CustomerController
   {
     model.doCheck(pn);
   }
+  
+  /**
+   * Checks interaction from view
+   * @param pn in this case the product name to be checked
+   */
+  public void doCheck2( String pn )
+  {
+    model.doCheck2(pn);
+  }
 
   /**
    * Clear interaction from view

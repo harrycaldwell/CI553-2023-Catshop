@@ -9,6 +9,9 @@ import middle.StockException;
 import middle.StockReader;
 
 import javax.swing.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 
 /**
@@ -26,6 +29,7 @@ public class CustomerModel extends Observable
   private StockReader     theStock     = null;
   private OrderProcessing theOrder     = null;
   private ImageIcon       thePic       = null;
+  private HashMap<String, String> productsKey = new HashMap<String, String>();
 
   /*
    * Construct the model of the Customer
@@ -61,7 +65,7 @@ public class CustomerModel extends Observable
   {
     theBasket.clear();                          // Clear s. list
     String theAction = "";
-    pn  = productNum.trim();                    // Product no.
+    String pn  = productNum.trim();                    // Product no.
     int    amount  = 1;                         //  & quantity
     try
     {
@@ -94,7 +98,59 @@ public class CustomerModel extends Observable
     }
     setChanged(); notifyObservers(theAction);
   }
-
+  
+  /**
+   * Check if any products that relate to the name are in stock or exist
+   * @param productName the products name
+   */
+  public void doCheck2(String productName)
+  {
+	  /* Checks if what is entered contains a 0. If it does, calls on the original doCheck() method to
+	  	 search via productNumber instead. */
+	  if(productName.contains("0")) {
+		  doCheck(productName);
+		  return;
+	  }
+    theBasket.clear();   
+    String theAction = "";
+    //Translates the product name to pn, gets rid of any blank space
+    pn  = productName.trim();    
+    int    amount  = 1;               
+    try
+    {      
+      //Creates an array list of any products that match the criteria
+      ArrayList<Product> products = theStock.getDetailsName( pn );
+       for (Product pr : products) {
+        if ( theStock.existsName(pr.getDescription()) ){  
+        	if ( pr.getQuantity() >= amount )
+        	{ 
+        		theAction =
+        				String.format( "%s : %7.2f (%2d) ",
+        						pr.getProductNum(),  
+        						pr.getPrice(),   
+        						pr.getQuantity() );
+        		pr.setQuantity( amount );      
+        		theBasket.add( pr );               
+        		thePic = theStock.getImage( pr.getProductNum() ); 
+        	} else {              
+        		theAction =            
+        				pr.getDescription() +         
+        				" this item does not exist." ; 
+        	}
+        }
+        else {       
+            theAction =                             //  Inform Unknown
+              "Unknown Product Query with the name:  " + pn;       //  product number
+          }
+        }
+       
+    } catch( StockException e )
+    {
+      DEBUG.error("CustomerClient.doCheck()\n%s",
+      e.getMessage() );
+    }
+    setChanged(); notifyObservers(theAction);
+  }
   /**
    * Clear the products from the basket
    */
@@ -132,5 +188,6 @@ public class CustomerModel extends Observable
   {
     return new Basket();
   }
+  
 }
 
