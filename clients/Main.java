@@ -9,8 +9,10 @@ import clients.collection.CollectController;
 import clients.collection.CollectModel;
 import clients.collection.CollectView;
 import clients.customer.CustomerController;
+import clients.customer.CustomerControllerRes;
 import clients.customer.CustomerModel;
 import clients.customer.CustomerView;
+import clients.customer.CustomerViewRes;
 import clients.shopDisplay.DisplayController;
 import clients.shopDisplay.DisplayModel;
 import clients.shopDisplay.DisplayView;
@@ -52,7 +54,7 @@ class Main
     startCustomerGUI_MVC( mlf );
     if ( many ) 
      startCustomerGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf );
+    startCustomerResGUI_MVC( mlf );
     startCashierGUI_MVC( mlf );
     startBackDoorGUI_MVC( mlf );
     if ( many ) 
@@ -79,6 +81,23 @@ class Main
     model.addObserver( view );       // Add observer to the model
     window.setVisible(true);         // start Screen
   }
+  
+  public void startCustomerResGUI_MVC(MiddleFactory mlf )
+  {
+    JFrame  window = new JFrame();
+    window.setTitle( "Customer Client MVC");
+    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Dimension pos = PosOnScrn.getPos();
+    
+    CustomerModel model      = new CustomerModel(mlf);
+    CustomerViewRes view        = new CustomerViewRes( window, mlf, pos.width, pos.height );
+    CustomerControllerRes cont  = new CustomerControllerRes( model, view );
+    view.setController( cont );
+
+    model.addObserver( view );       // Add observer to the model
+    window.setVisible(true);         // start Screen
+  }
+
 
   /**
    * start the cashier client

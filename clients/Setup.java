@@ -64,6 +64,18 @@ class Setup
 		  
   /*"select * from StockTable, ProductTable " +
   	"where ProductTable.description like '%TV%'"*/
+          
+          "drop table ResTable",
+          "create table ResTable ("+
+              "resNo      Char(3)," +
+              "productNo     Char(4)," +
+              "quantity 	Integer)",
+
+          "insert into ResTable values ( '001',  '0001', 3 )",
+          "insert into ResTable values ( '001',  '0002', 1)",
+          
+          "select * from ResTable",
+
 
  };
 
