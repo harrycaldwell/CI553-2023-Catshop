@@ -182,8 +182,8 @@ public class CashierModel extends Observable
 	    			}
 	    			else {
 	    				theBasket.remove(i);
-	    				theStock.addStock(theProduct.getProductNum(),theProduct.getQuantity());
 	    			}
+	    			theStock.addStock(theProduct.getProductNum(),theProduct.getQuantity());
 	    		}
 	    	}
 		    theAction = "Removed " + theProduct.getDescription() + " from the basket";
