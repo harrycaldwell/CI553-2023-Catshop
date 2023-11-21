@@ -63,10 +63,11 @@ public class CustomerView implements Observer
     rootWindow.setLocation( x, y );
 
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
-
+    
+    // enables the use of the new check method
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
-    theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
+    theBtCheck.addActionListener(
+      e -> cont.doCheck2( theInput.getText() ) );
     cp.add( theBtCheck );                           //  Add to canvas
 
     theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button

@@ -14,6 +14,7 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -107,6 +108,24 @@ public class StockR implements StockReader
       throw new StockException( "SQL exists: " + e.getMessage() );
     }
   }
+  
+  
+  /**
+   * Checks if the product exits in the stock list via name/description
+   * @param desc The search criteria entered by the consumer
+   * @return true if exists otherwise false
+   */
+  public synchronized boolean existsName(String desc) throws StockException{
+	 try {
+		 ResultSet rs = getStatementObject().executeQuery(
+				 "select distinct description from ProductTable " + " where ProductTable.description like '%" + desc + "%'");
+		 boolean res = rs.next();
+		 DEBUG.trace("DB StockR: existsName(%s) -> %s", (res ? "T" : "F" ) );
+		 return res;
+	 } catch (SQLException e) {
+		 throw new StockException("SQL existsName: " + e.getMessage());
+	 }
+  }
 
   /**
    * Returns details about the product in the stock list.
@@ -140,6 +159,50 @@ public class StockR implements StockReader
       throw new StockException( "SQL getDetails: " + e.getMessage() );
     }
   }
+  
+  /**
+   * Returns an arraylist containing all products in the database that match the search criteria/
+   *  Assumed to exist in database.
+   * @param desc is the description or name of the product entered by the consumer
+   * @return an arraylist containing the products type Product
+   */
+  public synchronized ArrayList<Product> getDetailsName( String desc )
+	         throws StockException
+	  {
+	  ArrayList<Product> results = new ArrayList<Product>();
+	    try
+	    {
+	      Statement sm = theCon.createStatement();
+	      ResultSet rs = getStatementObject().executeQuery(
+	        "select distinct productNo" +
+	        "  from ProductTable " +
+	        "  where  lower(ProductTable.description) like lower('%" + desc + "%')");
+	      while ( rs.next() )
+	      {
+	    	Product   dt = new Product( "0", "", 0.00, 0 );
+	        String pNum = rs.getString("productNo");
+	        DEBUG.trace(pNum);
+	        ResultSet ry = sm.executeQuery(
+	        		"select description, price, stockLevel " +
+	        		"  from ProductTable, StockTable " +
+	        		"  where  ProductTable.productNo = '" + pNum + "' " +
+	        		"  and    StockTable.productNo   = '" + pNum + "'");
+	        if (ry.next()) {
+	        	dt.setProductNum(pNum);
+	        	dt.setQuantity( ry.getInt( "stockLevel" ) );
+	        	dt.setDescription(ry.getString("description"));
+	        	dt.setPrice( ry.getDouble("price"));
+	        }
+	        results.add(dt);
+	        
+	      }
+	      return results;
+	    } catch ( SQLException e )
+	    {
+	      throw new StockException( "SQL getDetailsName: " + e.getMessage() );
+	    }
+	  }
+
 
   /**
    * Returns 'image' of the product
