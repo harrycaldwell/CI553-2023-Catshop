@@ -5,7 +5,6 @@ import catalogue.Product;
 import debug.DEBUG;
 import middle.*;
 
-import java.util.HashMap;
 import java.util.Observable;
 
 /**
